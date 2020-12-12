@@ -1,0 +1,17 @@
+{% extends 'Manager/base.html' %}
+{% block content %}
+<form method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <!-- <div class="mb-3">
+      <input type="date" class="form-control form-control-sm" name=creating required>
+  </div>
+  <div class="mb-3">
+      <input type="text" class="form-control form-control-sm" placeholder="Job Name" name='job'vrequired>
+  </div> -->
+      <div class="mb-3">
+          <button type="submit" class="btn btn-sm btn-success btn-block">Add New Job</button>
+      </div>
+</form>
+
+{% endblock %}

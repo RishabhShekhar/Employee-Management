@@ -1,0 +1,158 @@
+{% extends 'Manager/base.html' %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row mt-3">
+            <div class="col-lg-3 col-md-3">
+                <div class="list-group small">
+                    <div class="list-group-item active">Employee Data</div>
+                    <a href="{% url 'add_employee' %}" class="list-group-item"">Add Employee</a>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-9">
+                <table class="table table-striped table-hover bg-light small">
+                  <tr class="thead-dark">
+                    <th>Employee ID</th>
+                    <th>Name</th>
+                    <th>Email ID</th>
+                    <th>Details</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                  </tr>
+
+                  {% for employee in employee_list %}
+                    <tr>
+                      <td>{{ employee.emid }}</td>
+                      <td>{{ employee.name }}</td>
+                      <td>{{ employee.email }}</td>
+                      <td><a href="{% url 'employee_detail' pk=employee.pk %}" class="btn btn-sm btn-block btn-info">Details</a></td>
+                      <td><a href="{% url 'employee_edit' pk=employee.pk %}" class="btn btn-sm btn-block btn-warning"><i class="far fa-edit"> Edit</i></a></td>
+                      <td><a href="{% url 'employee_remove' pk=employee.pk %}" class="btn btn-sm btn-block btn-danger" onclick="return confirm('Are you sure you want to delete \'{{employee.name}}\'?')"><i class="fas fa-trash-alt"> Delete</i></a></td>
+                  </tr>
+                  {% endfor %}
+                </table>
+                <div class="modal-div"></div>
+              </div>
+        </div>
+    </div>
+
+  <!-- Add Employee Modal -->
+  <div class="modal fade" id="add_employee" tabindex="-1" aria-labelledby="add_employee" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Employee Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+                <input type="date" class="form-control form-control-sm" required>
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control form-control-sm" placeholder="Employee Name" required>
+            </div>
+           <div class="mb-3">
+                <input type="email" class="form-control form-control-sm" placeholder="Employee Email ID" required>
+            </div>
+            <div class="mb-3">
+                <input type="tel" class="form-control form-control-sm" placeholder="Employee Phone Number" required>
+            </div>
+            <div class="mb-3">
+                <select class="form-control form-control-sm">
+                    <option value="Graphic Designer">Graphic Designer</option>
+                    <option value="Web Designer">Web Designer</option>
+                    <option value="Web Devloper">Web Developer</option>
+                </select>
+            </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-sm btn-success btn-block">Add New Employee</button>
+                </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Details Modal -->
+  <div class="modal fade" id="{{employee.id}}" tabindex="-1" aria-labelledby="employee_details1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Employee Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <table class="table table-bordered">
+          <tr>
+            <th>ID</th>
+            <td>{{employee.id}}</td>
+          </tr>
+          <tr>
+            <th>Joining Date</th>
+            <td>{{employee.joining}}</td>
+          </tr>
+          <tr>
+            <th>Name</th>
+            <td>{{employee.name}}</td>
+          </tr>
+          <tr>
+            <th>Email ID</th>
+            <td>{{employee.email}}</td>
+          </tr>
+          <tr>
+            <th>Phone</th>
+            <td>+919865382056</td>
+          </tr>
+          <tr>
+            <th>Job</th>
+            <td>Web Developer</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+  <div class="modal fade" id="myEdit" tabindex="-1" aria-labelledby="employee_edit_details" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Employee Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <input type="text" class="form-control form-control-sm" value="{{instance.joining}}" required>
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control form-control-sm" value="{{instance.name}" placeholder="Employee Name" required>
+            </div>
+           <div class="mb-3">
+                <input type="email" class="form-control form-control-sm" value="{{instance.email}}" placeholder="Employee Email ID" required>
+            </div>
+            <div class="mb-3">
+                <input type="tel" class="form-control form-control-sm" value="{{instance.contact}}" placeholder="Employee Phone Number" required>
+            </div>
+            <div class="mb-3">
+              <input type="tel" class="form-control form-control-sm" value="{{instance.designation}}" placeholder="Employee Job" required>
+          </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-sm btn-success btn-block" data-dismiss="modal">Update Employee</button>
+                </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endblock %}
